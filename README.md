@@ -6,10 +6,10 @@ I chose to scrape data for french red wine on the Ocado website, as this is a se
 
 I have used Selenium Webdriver as my selected website includes Javascript.
 
-The code for these milestones is in dpl_mail.py. The Scraper class opens the chosen website, maximises the browser and compiles a list of all product page URLs, scrolling down the page to reveal all the results.
+The code for these milestones is in dpl_main.py. The Scraper class opens the chosen website, maximises the browser and compiles a list of all product page URLs, scrolling down the page to reveal all the results.
 
 ## Milestone 4
-This code performs a web scrape on a single product on the Ocado website. It collects the following data:
+This code (milestone_4.py) performs a web scrape on a single product on the Ocado website. It collects the following data:
   - Product Name
   - Price
   - Image URL
@@ -28,3 +28,9 @@ I have imported the following modules:
   - os to create and manage directories
   - requests to download the image
   - json to save the dictionary
+
+## Milestone 5
+The code in dpl_main.py and milestone_4.py has been combined in scraper.py. This compiles a list of product page URLs and opens each one to scrape the text and image from each one. I have used a page with only three product results for now, so that testing the code is faster and won't result in a large quantity of data being saved on my hard drive. 
+
+test_scraper.py contains unit tests for the main methods in the Scraper class.
+I have imported unittest to perform the tests.
