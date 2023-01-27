@@ -1,5 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.firefox.options import Options
 import datetime
 import json
 import os
@@ -8,12 +9,13 @@ import time
 
 class Scraper():
     def __init__(self, url):
-        self.driver = webdriver.Firefox()
+        FirefoxOptions = Options()
+        FirefoxOptions.headless = True
+        self.driver = webdriver.Firefox(options=FirefoxOptions)
         path = '/Users/victo/Drivers/geckodriver.exe'
         self.url_to_scrape = url
-        self.dict_products = {'Image': [], 'Product Name': [], 'Price': [], 'Description': [], 'Rating': [], 'Timestamp': [], 'ID': []}
-
-    def __accept_cookies(self):
+       
+    def accept_cookies(self):
         '''
         This method accepts the cookies by clicking on the button if displayed.
         '''
@@ -35,7 +37,7 @@ class Scraper():
         self.driver.maximize_window()
         self.driver.get(self.url_to_scrape)
         time.sleep(2)
-        self.__accept_cookies()
+        self.accept_cookies()
         time.sleep(1)
         self.__scroll_down_all()
     
@@ -50,7 +52,7 @@ class Scraper():
             time.sleep(2)
             self.driver.execute_script("window.scrollTo(0, {});".format(i))
 
-    def __create_product_url_list(self):
+    def create_product_url_list(self):
         '''
         This method finds the URL of the individual product page for each search result.
         This also adds three recommended products that we don't want to scrape data for, so these are removed from the list.
@@ -67,7 +69,10 @@ class Scraper():
 
         return self.product_url_list
 
-    def __get_image_url(self):
+    def initialise_dictionary(self):
+        self.dict_products = {'Image': [], 'Product Name': [], 'Price': [], 'Description': [], 'Rating': [], 'Timestamp': [], 'ID': []}
+
+    def get_image_url(self):
         '''
         This method finds the source URL of the product image and adds it to the dictionary.
         ''' 
@@ -76,7 +81,7 @@ class Scraper():
         self.image_src = image_container.get_attribute("src")
         self.dict_products['Image'].append(self.image_src)
 
-    def __get_text(self):
+    def get_text(self):
         '''
         This method finds the name of the product (including volume), the price, the description text and the customer rating (if it has one), and adds them to the dictionary.
         '''
@@ -98,7 +103,7 @@ class Scraper():
             self.no_rating = 'NA'
             self.dict_products['Rating'].append(self.no_rating)
 
-    def __get_timestamp(self):
+    def get_timestamp(self):
         '''
         This method adds a timestamp of when the data was scraped to the dictionary.
         '''
@@ -106,7 +111,7 @@ class Scraper():
         self.timestamp = datetime.datetime.now()
         self.dict_products['Timestamp'].append(self.timestamp.strftime('%Y-%m-%d %H:%M:%S'))
 
-    def __get_product_id(self):
+    def get_product_id(self):
         '''
         This method finds the product ID number, by taking it from the end of the product page URL, and adds it to the dictionary.
         '''
@@ -138,7 +143,7 @@ class Scraper():
             os.mkdir(subdir)
             print('Creating ID folder')
         else:
-            print('ID folder already exists!')
+            print(f'{self.product_id} folder already exists!')
 
     def __save_image(self): 
         '''
@@ -174,7 +179,7 @@ class Scraper():
         This method begins the web scraping process. It calls the method that creates a list of product page urls. 
         It then opens each page and scrapes the data.
         '''
-        self.__create_product_url_list()
+        self.create_product_url_list()
 
         for self.product_url in self.product_url_list:
             self.driver.get(self.product_url)
@@ -184,10 +189,11 @@ class Scraper():
         '''
         This function calls all the methods to collect and store the data and image.
         '''
-        self.__get_image_url()
-        self.__get_text()
-        self.__get_timestamp()
-        self.__get_product_id()
+        self.initialise_dictionary()
+        self.get_image_url()
+        self.get_text()
+        self.get_timestamp()
+        self.get_product_id()
         self.__save_dictionary()
     
     

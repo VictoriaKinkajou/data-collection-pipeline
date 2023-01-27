@@ -9,6 +9,7 @@ class Dpl_mainTestCase(unittest.TestCase):
     def setUp(self):
         self.scraper = Scraper('https://www.ocado.com/search?entry=frubes')
         self.product_page = 'https://www.ocado.com/products/frubes-strawberry-yoghurt-30542011'
+        self.scraper.initialise_dictionary()
 
     def open_product_page(self):
         self.scraper.driver.get(self.product_page)
