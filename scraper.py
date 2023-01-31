@@ -127,9 +127,11 @@ class Scraper():
         '''
         This method creates a folder named "raw_data" if it doesn't already exist.
         '''
-        dir = os.path.join("C:\\", "Users\\victo\\AiCoreCoursework\\data-collection-pipeline", "raw_data")
-        if not os.path.exists(dir):
-            os.mkdir(dir)
+        #path = os.getcwd()
+        self.dir = "./raw_data"
+        
+        if not os.path.exists(self.dir):
+            os.mkdir(self.dir)
             print('Creating raw data folder')
         else:
             print('Raw data folder already exists!')
@@ -138,9 +140,9 @@ class Scraper():
         '''
         This method creates a subfolder in the "raw_data" folder, with the product ID number as its name.
         '''
-        subdir = os.path.join("C:\\", "Users\\victo\\AiCoreCoursework\\data-collection-pipeline\\raw_data", self.product_id)
-        if not os.path.exists(subdir):
-            os.mkdir(subdir)
+        id_dir = os.path.join(self.dir, self.product_id)
+        if not os.path.exists(id_dir):
+            os.mkdir(id_dir)
             print('Creating ID folder')
         else:
             print(f'{self.product_id} folder already exists!')
@@ -149,7 +151,7 @@ class Scraper():
         '''
         This method creates a subfolder named "images" in the product ID folder. Then it downloads the product image jpeg from the source URL and saves it in the "images" folder.
         '''
-        img_dir = os.path.join("C:\\", f"Users\\victo\\AiCoreCoursework\\data-collection-pipeline\\raw_data\\{self.product_id}", "images")
+        img_dir = os.path.join(f"raw_data/{self.product_id}", "images")
         if not os.path.exists(img_dir):
             os.mkdir(img_dir)
             print('Creating images folder')
@@ -159,7 +161,7 @@ class Scraper():
         
             img_data = requests.get(image_url).content
         
-            with open(f'raw_data\\{self.product_id}\\images\\Product Image.jpg', 'wb') as handler:
+            with open(f"raw_data/{self.product_id}/images/Product Image.jpg", 'wb') as handler:
                 handler.write(img_data)
             print(f'Product image saved in {self.product_id} folder')
 
@@ -169,7 +171,7 @@ class Scraper():
         '''
         self.__create_raw_data_folder()
         self.__create_id_subfolder()
-        with open(f'raw_data\\{self.product_id}\\json_data.json', 'w') as f:
+        with open(f"raw_data/{self.product_id}/json_data.json", 'w') as f:
             json.dump(self.dict_products, f, indent=6)
         self.__save_image()
         print('Saving dictionary in json file')
@@ -198,7 +200,7 @@ class Scraper():
     
     
 def scrape_all():
-    new_scraper = Scraper('https://www.ocado.com/search?entry=frubes')
+    new_scraper = Scraper('https://www.ocado.com/search?entry=muller')
     new_scraper.open_product_page()
     new_scraper.driver.close()
     
