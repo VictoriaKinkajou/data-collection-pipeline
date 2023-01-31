@@ -4,7 +4,7 @@ import unittest
 import unittest.mock as mock
 import time
 
-class Dpl_mainTestCase(unittest.TestCase):
+class ScraperTestCase(unittest.TestCase):
     
     def setUp(self):
         self.scraper = Scraper('https://www.ocado.com/search?entry=frubes')
@@ -12,15 +12,19 @@ class Dpl_mainTestCase(unittest.TestCase):
         self.scraper.initialise_dictionary()
 
     def open_product_page(self):
+        self.scraper.driver.maximize_window()
         self.scraper.driver.get(self.product_page)
         time.sleep(1)
         self.scraper.accept_cookies()
         time.sleep(1)
 
-    def test_create_product_url_list(self, expected = 3):
+    def test_create_product_url_list(self):
         url_list = self.scraper.create_product_url_list()
+        #self.open_product_page()
+        self.number_of_results = self.scraper.driver.find_element(by=By.CLASS_NAME, value='total-product-number').text
+        expected_results = int(self.number_of_results[0])
         self.assertIs(type(url_list), list)
-        self.assertEqual(expected, len(self.scraper.product_url_list))
+        self.assertEqual(expected_results, len(self.scraper.product_url_list))
 
     def test_get_image_url(self):
         self.open_product_page()
@@ -31,7 +35,7 @@ class Dpl_mainTestCase(unittest.TestCase):
         self.open_product_page()
         self.scraper.get_text()
         self.assertEqual("Frubes Strawberry Yoghurt 9 x 37g", self.scraper.product_name)
-        self.assertEqual("45.1p per 100g", self.scraper.price)
+        self.assertEqual("67.6p per 100g", self.scraper.price)
         self.assertEqual("Good Stuff inside\n...and cool stuff on the back", self.scraper.description)
         self.assertEqual("4.5", self.scraper.rating)
 
@@ -67,7 +71,7 @@ class Dpl_mainTestCase(unittest.TestCase):
         expected_dictionary = {
             'Image': ['https://www.ocado.com/productImages/305/30542011_0_640x640.jpg?identifier=26128dc4f17d53769f81417b59c54201'], 
             'Product Name': ['Frubes Strawberry Yoghurt 9 x 37g'], 
-            'Price': ['45.1p per 100g'], 
+            'Price': ['67.6p per 100g'], 
             'Description': ['Good Stuff inside\n...and cool stuff on the back'], 
             'Rating': ['4.5'], 
             'Timestamp': [mock.ANY], 
