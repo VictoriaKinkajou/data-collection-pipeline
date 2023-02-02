@@ -2,7 +2,7 @@
 An implementation of an industry grade data collection pipeline that runs scalably in the cloud. 
 
 ## Milestones 1-3
-I chose to scrape data for french red wine on the Ocado website, as this is a search I often perform and I am familiar with the site.
+I chose to scrape data for products on the Ocado website, as this is a search I often perform and I am familiar with the site.
 
 I have used Selenium Webdriver as my selected website includes Javascript, and I am using Firefox as a browser, so I need geckodriver to use this with Selenium.
 
@@ -36,6 +36,7 @@ test_scraper.py contains unit tests for the main methods in the Scraper class.
 I have imported unittest to perform the tests.
 
 ## Milestones 6 & 7
+In these milestones, I corrected some errors in my code and updated scraper.py and test_scraper.py.
 I have updated the scraper to perform a web scrape on a larger number of products and it now runs in headless mode. 
 I have containerised the scraper using Docker and deployed the image to DockerHub.
 I have set up a CI/CD pipeline using GitHub Actions, so that the Docker image is built whenever an update is pushed to the GitHub repository.
