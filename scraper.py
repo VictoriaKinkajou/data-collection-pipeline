@@ -14,6 +14,7 @@ class Scraper():
         self.driver = webdriver.Firefox(options=FirefoxOptions)
         path = '/Users/victo/Drivers/geckodriver.exe'
         self.url_to_scrape = url
+        self.dict_products = {'Image': [], 'Product Name': [], 'Price': [], 'Description': [], 'Rating': [], 'Timestamp': [], 'ID': []}
        
     def accept_cookies(self):
         '''
@@ -66,11 +67,6 @@ class Scraper():
             link = a_tag.get_attribute("href")
             url_list_including_recommended_products.append(link)
         self.product_url_list = url_list_including_recommended_products[3:]
-
-        return self.product_url_list
-
-    def initialise_dictionary(self):
-        self.dict_products = {'Image': [], 'Product Name': [], 'Price': [], 'Description': [], 'Rating': [], 'Timestamp': [], 'ID': []}
 
     def get_image_url(self):
         '''
