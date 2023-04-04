@@ -1,6 +1,6 @@
 # Data Collection Pipeline
 An implementation of an industry grade data collection pipeline that runs scalably in the cloud. 
-This project forms part of my coursework for the AiCore Data Analytics course. The final scraper file is scraper.py.
+This project forms part of my coursework for the AiCore Data Analytics course. The final scraper file is named scraper.py.
 
 ## Milestones 1-3
 I chose to scrape data for products on the Ocado website, as this is a search I often perform and I am familiar with the site.
